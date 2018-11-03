@@ -44,29 +44,63 @@ class swapSort{
         for(int i=data.length;i>0;i--){
             for(int j=0;j<i-1;j++){
                 if(data[j]>data[j+1]){
-                    int cur=data[j];
-                    data[j]=data[j+1];
-                    data[j+1]=cur;
+                    swap(data,j+1,j);
                 }
             }
         }
     }
+    //交换节点数据
+    public void swap(int []data,int n,int m) {
+        int cur=data[n];
+        data[n]=data[m];
+        data[m]=cur;
+    }
 }
 class selectionSort{
+    //直接交换排序
     public void SelectSort(int []data){
-        for(int i=0;i>data.length;i++){
-            int max=i;
+        for(int i=0;i<data.length;i++){
+            int min=i;
             for(int j=i+1;j<data.length;j++){
-                if(data[max]<data[j]){
-                    max=j;
+                if(data[min]>data[j]){
+                    min=j;
                 }
             }
-            if(max!=i){
-                int cur=data[max];
-                data[max]=data[i];
-                data[i]=cur;
+            if(min!=i){
+                swap(data,min,i);
             }
         }
+    }
+    //向下调整
+    public void AdjustDown(int []data,int i,int len){
+        int parent=i;
+        int bord=len/2-1;
+        while(parent<=bord){
+            int child=parent*2+1;
+            if(child+1<len){
+                child=data[child+1]>data[child]?child+1:child;
+            }
+            if(data[child]>data[parent]){
+                swap(data,parent,child);
+            }
+            ++parent;
+        }
+    }
+    //堆排序
+    public void HeapSort(int []data){
+        for(int parent=data.length/2-1;parent>=0;parent--){
+            AdjustDown(data,parent,data.length);
+        }
+        for(int i=data.length-1;i>0;i--){
+            swap(data,0,i);
+            AdjustDown(data,0,i);
+        }
+    }
+    //交换节点数据
+    public void swap(int []data,int n,int m) {
+        int cur=data[n];
+        data[n]=data[m];
+        data[m]=cur;
     }
 }
 public class sort {
@@ -76,7 +110,8 @@ public class sort {
         //sort.InsertSort(data);
         //sort.ShellSort(data);
         selectionSort sort=new selectionSort();
-        sort.SelectSort(data);
+        //sort.SelectSort(data);
+        sort.HeapSort(data);
         print(data);
     }
     public static void print(int data[]){
