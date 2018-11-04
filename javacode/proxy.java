@@ -1,4 +1,4 @@
-package www.Dyson.java;
+1package www.Dyson.java;
 //抽象主题类
 interface abstractTheme{
     void buylipstick();
@@ -33,3 +33,4 @@ public class proxy {
         object.buylipstick();
     }
 }
+
