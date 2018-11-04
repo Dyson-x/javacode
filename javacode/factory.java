@@ -1,5 +1,5 @@
 package www.Dyson.java;
-interface Computer{
+interface Computer{  
     void printComputer();
 }
 class macBookProComputer implements Computer{
