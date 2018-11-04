@@ -1,6 +1,6 @@
-package www.Dyson.java;
+﻿package www.Dyson.java;
 interface ILink{
-    void add(Object obj);
+    void add(Object obj); 
     boolean remowe(Object obj);
     Object set(int index,Object newData);
     Object get(int index);
