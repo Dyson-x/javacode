@@ -3,6 +3,7 @@ package www.Dyson.java;
 5  2  4  6  1  3
 2  5  4  6  1  3
  */
+//插入排序
 class insertSort{
     //直接插入排序
     public void InsertSort(int []data){
@@ -38,6 +39,7 @@ class insertSort{
         }
     }
 }
+//交换排序
 class swapSort{
     //冒泡排序
     public void BubbleSort(int []data){
@@ -49,6 +51,62 @@ class swapSort{
             }
         }
     }
+    //快速排序
+    public void QuickSort(int []data,int left,int right){
+        if(left>=right){
+            return;
+        }
+        int div=partionThree(data,left,right);
+        QuickSort(data,left,div-1);
+        QuickSort(data,div+1,right);
+    }
+    //左右指针法
+    public int partionOne(int []data,int begin,int end){
+        int index=end;
+        int key=data[end];
+        while(begin<end){
+            while(begin<end&&data[begin]<=key){
+                begin++;
+            }
+            while(begin<end&&data[end]>=key){
+                end--;
+            }
+            swap(data,begin,end);
+        }
+        swap(data,begin,index);
+        return begin;
+    }
+    //挖坑法
+    public int partionTwo(int []data,int begin,int end){
+        int key=data[end];
+        while(begin<end){
+            while(begin<end&&data[begin]<=key){
+                begin++;
+            }
+            data[end]=data[begin];
+            while(begin<end&&data[end]>=key){
+                end--;
+            }
+            data[begin]=data[end];
+        }
+        data[begin]=key;
+        return begin;
+    }
+    //前后指针法
+    public int partionThree(int []data,int begin,int end){
+        int next=begin;
+        int prev=next-1;
+        int key=end;
+        while(next<end){
+            if(data[next]<data[key]&&++prev!=next){
+                swap(data,prev,next);
+            }
+            next++;
+        }
+        //重要：这里prev容易遗忘++，如果没有+1，会造成栈溢出
+        swap(data,++prev,key);
+        return prev;
+    }
     //交换节点数据
     public void swap(int []data,int n,int m) {
         int cur=data[n];
@@ -56,6 +114,7 @@ class swapSort{
         data[m]=cur;
     }
 }
+//选择排序
 class selectionSort{
     //直接交换排序
     public void SelectSort(int []data){
@@ -109,9 +168,11 @@ public class sort {
         //insertSort sort=new insertSort();
         //sort.InsertSort(data);
         //sort.ShellSort(data);
-        selectionSort sort=new selectionSort();
+        //selectionSort sort=new selectionSort();
         //sort.SelectSort(data);
-        sort.HeapSort(data);
+        //sort.HeapSort(data);
+        swapSort sort=new swapSort();
+        sort.QuickSort(data,0,data.length-1);
         print(data);
     }
     public static void print(int data[]){
