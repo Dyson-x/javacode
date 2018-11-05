@@ -1,4 +1,4 @@
-﻿package www.Dyson.java;
+package www.Dyson.java;
 /*
 5  2  4  6  1  3
 2  5  4  6  1  3
@@ -162,6 +162,46 @@ class selectionSort{
         data[m]=cur;
     }
 }
+//归并排序
+class mergeSort{
+    public void MergeSort(int []data,int left,int right){
+        //当left==right，return
+        if(left>=right){
+            return;
+        }
+        int mid=left+((right-left)>>1);
+        //使用递归不断的去将数组拆分
+        MergeSort(data,left,mid);
+        MergeSort(data,mid+1,right);
+        _Merge(data,left,mid,mid+1,right);
+    }
+    public void _Merge(int []data,int begin1,int end1,int begin2,int end2){
+        //将begin1和begin2的位置记录下来
+        int []tmp=new int[data.length];
+        int index=begin1;
+        int i=begin1;
+        int j=begin2;
+        while(i<=end1&&j<=end2){
+            //保证其稳定性
+            if(data[i]<=data[j]){
+                tmp[index++]=data[i++];
+            }else{
+                tmp[index++]=data[j++];
+            }
+        }
+        while(i<=end1){
+            tmp[index++]=data[i++];
+        }
+        while(j<=end2){
+            tmp[index++]=data[j++];
+        }
+        //最后将tmp数组中内容拷贝到原数组中相应位置即可
+        System.arraycopy(tmp,begin1,data,begin1,end2-begin1+1);
+        //while(begin1<=end2){
+        //   data[begin1]=tmp[begin1++];
+        //}
+    }
+}
 public class sort {
     public static void main(String[] args) {
         int []data=new int[]{5,2,4,6,1,3,9,7,8};
@@ -171,14 +211,19 @@ public class sort {
         //selectionSort sort=new selectionSort();
         //sort.SelectSort(data);
         //sort.HeapSort(data);
-        swapSort sort=new swapSort();
-        sort.QuickSort(data,0,data.length-1);
+        //swapSort sort=new swapSort();
+        //sort.QuickSort(data,0,data.length-1);
+        System.out.print("排序前结果为：");
+        print(data);
+        mergeSort sort=new mergeSort();
+        sort.MergeSort(data,0,data.length-1);
+        System.out.print("排序后结果为：");
         print(data);
     }
     public static void print(int data[]){
         for(int temp:data){
             System.out.print(temp+" ");
         }
+        System.out.println("");
     }
 }
-
