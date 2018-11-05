@@ -196,6 +196,7 @@ class mergeSort{
             tmp[index++]=data[j++];
         }
         //最后将tmp数组中内容拷贝到原数组中相应位置即可
+	//注意边界条件，拷贝的长度应该为end2-begin1+1
         System.arraycopy(tmp,begin1,data,begin1,end2-begin1+1);
         //while(begin1<=end2){
         //   data[begin1]=tmp[begin1++];
