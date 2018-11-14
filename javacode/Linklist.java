@@ -6,31 +6,31 @@ import java.lang.reflect.AnnotatedType;
 
 interface ILinklist <Anytype>{
     void PrintList();
-    //Î²²å
+    //å°¾æ’
     void PushBack(Anytype data);
-    //Î²É¾
+    //å°¾åˆ 
     void PopBack();
-    //Í·²å
+    //å¤´æ’
     void PushFront(Anytype data);
-    //Í·É¾
+    //å¤´åˆ 
     void PopFront();
-    //²éÕÒ
-    int Find(Anytype data);
-    //Ö¸¶¨Î»ÖÃ²åÈë
+    //æŸ¥æ‰¾èŠ‚ç‚¹ä½ç½®
+    int FindPos(Anytype data);
+    //æŒ‡å®šä½ç½®æ’å…¥
     void Insert(int pos, Anytype data);
-    //Ö¸¶¨Î»ÖÃÉ¾³ı
+    //æŒ‡å®šä½ç½®åˆ é™¤
     void Erase(int pos);
-    //É¾³ıÖ¸¶¨ÔªËØ
+    //åˆ é™¤æŒ‡å®šå…ƒç´ 
     void Remove(Anytype data);
-    //É¾³ıËùÓĞÖ¸¶¨ÔªËØ
+    //åˆ é™¤æ‰€æœ‰æŒ‡å®šå…ƒç´ 
     void RemoveAll(Anytype data);
-    //É¾³ıÎŞÍ·µ¥Á´±íµÄ·ÇÎ²½Úµã£¨²»ÄÜ±éÀúÁ´±í£©
+    //åˆ é™¤æ— å¤´å•é“¾è¡¨çš„éå°¾èŠ‚ç‚¹ï¼ˆä¸èƒ½éå†é“¾è¡¨ï¼‰
     void EraseNotTailNode(int pos);
-    //Á´±í³¤¶È
+    //é“¾è¡¨é•¿åº¦
     int GetListLength();
 }
 class MyLink <AnyType> implements ILinklist <AnyType>{
-    private int size;
+    private int size=0;
     private Node head;
     private class Node{
         private Node next=null;
@@ -39,7 +39,27 @@ class MyLink <AnyType> implements ILinklist <AnyType>{
             this.data=data;
         }
     }
-    //´òÓ¡
+    public Node FindNode(AnyType data){
+        if(head==null){
+            return null;
+        }
+        Node tmp=head;
+        if(data==null){
+            while(tmp!=null){
+                if(tmp.data==data){
+                    return tmp;
+                }
+            }
+        }else{
+            while(tmp!=null){
+                if(data.equals(tmp.data)){
+                    return tmp;
+                }
+            }
+        }
+        return null;
+    }
+    //æ‰“å°
     @Override
     public void PrintList() {
         Node cur=this.head;
@@ -48,7 +68,7 @@ class MyLink <AnyType> implements ILinklist <AnyType>{
             cur=cur.next;
         }
     }
-    //Î²²å
+    //å°¾æ’
     @Override
     public void PushBack(AnyType data) {
         Node newNode=new Node(data);
@@ -64,7 +84,7 @@ class MyLink <AnyType> implements ILinklist <AnyType>{
         tmp.next=newNode;
         size++;
     }
-    //Î²É¾
+    //å°¾åˆ 
     @Override
     public void PopBack() {
         if(head==null){
@@ -82,7 +102,7 @@ class MyLink <AnyType> implements ILinklist <AnyType>{
         prev.next=null;
         size--;
     }
-    //Í·²å
+    //å¤´æ’
     @Override
     public void PushFront(AnyType data) {
         Node newNode=new Node(data);
@@ -90,7 +110,7 @@ class MyLink <AnyType> implements ILinklist <AnyType>{
         head=newNode;
         size++;
     }
-    //Í·É¾
+    //å¤´åˆ 
     @Override
     public void PopFront() {
         if(head==null){
@@ -99,32 +119,35 @@ class MyLink <AnyType> implements ILinklist <AnyType>{
         head=head.next;
         size--;
     }
-    //²éÕÒ
+    //æŸ¥æ‰¾
     @Override
-    public int Find(AnyType data) {
+    public int FindPos(AnyType data) {
         Node tmp=head;
-        int ret=0;
+        int ret=1;
         if(data==null){
             while(tmp!=null){
                 if(tmp.data==null){
                     return ret;
                 }
                 ret++;
+                tmp=tmp.next;
             }
-        }
-        while(tmp!=null){
-            if(data.equals(tmp.data)){
-                return ret;
+        }else {
+            while (tmp != null) {
+                if (data.equals(tmp.data)) {
+                    return ret;
+                }
+                ret++;
+                tmp=tmp.next;
             }
-            ret++;
         }
         return -1;
     }
-    //Ö¸¶¨Î»ÖÃ²åÈë
+    //æŒ‡å®šä½ç½®æ’å…¥
     @Override
     public void Insert(int pos, AnyType data) {
         if(pos<1||pos>size){
-            throw new RuntimeException("²åÈëÎ»ÖÃ²»´æÔÚ!");
+            throw new RuntimeException("æ’å…¥ä½ç½®ä¸å­˜åœ¨!");
         }
         if(pos==1){
             PushFront(data);
@@ -146,14 +169,14 @@ class MyLink <AnyType> implements ILinklist <AnyType>{
         prev.next=newNode;
         size++;
     }
-    //Ö¸¶¨Î»ÖÃÉ¾³ı
+    //æŒ‡å®šä½ç½®åˆ é™¤
     @Override
     public void Erase(int pos) {
         if(head==null){
             return;
         }
         if(pos<1||pos>size){
-            throw new RuntimeException("É¾³ıÎ»ÖÃ²»´æÔÚ!");
+            throw new RuntimeException("åˆ é™¤ä½ç½®ä¸å­˜åœ¨!");
         }
         if(pos==1){
             PopFront();
@@ -174,18 +197,19 @@ class MyLink <AnyType> implements ILinklist <AnyType>{
         prev.next=tmp.next;
         size--;
     }
-    //É¾³ıÖ¸¶¨ÔªËØ
+    //åˆ é™¤æŒ‡å®šå…ƒç´ 
     @Override
     public void Remove(AnyType data) {
         if(head==null){
             return;
         }
-        int pos=Find(data);
+        int pos=FindPos(data);
         if(pos==-1){
-            throw new RuntimeException("É¾³ıµÄÔªËØ²»´æÔÚ£¡");
+            throw new RuntimeException("åˆ é™¤çš„å…ƒç´ ä¸å­˜åœ¨ï¼");
         }
         if(pos==1){
-            PopFront();
+            head=head.next;
+            --size;
             return;
         }
         if(pos==size){
@@ -203,17 +227,36 @@ class MyLink <AnyType> implements ILinklist <AnyType>{
         prev.next=tmp.next;
         size--;
     }
-    //É¾³ıËùÓĞÖ¸¶¨ÔªËØ
+    //åˆ é™¤æ‰€æœ‰æŒ‡å®šå…ƒç´ 
     @Override
     public void RemoveAll(AnyType data) {
-
+        int i = 1;
+        while (i <= size) {
+            if (FindPos(data) != -1) {
+                Remove(data);
+            } else {
+                ++i;
+            }
+        }
     }
-    //É¾³ıÎŞÍ·µ¥Á´±íµÄ·ÇÎ²½Úµã£¨²»ÄÜ±éÀúÁ´±í£©
-    @Override
-    public void EraseNotTailNode(int pos) {
-
+    private Node FindNode(int pos){
+        Node tmp=head;
+        while(pos>0){
+            tmp=tmp.next;
+            --pos;
+        }
+        return tmp;
     }
-    //Á´±í³¤¶È
+    //åˆ é™¤æ— å¤´å•é“¾è¡¨çš„éå°¾èŠ‚ç‚¹ï¼ˆä¸èƒ½éå†é“¾è¡¨ï¼‰
+    public void EraseNotTailNode(int pos){
+        if(pos<=1||pos>=this.size-1){
+            throw new RuntimeException("åˆ é™¤èŠ‚ç‚¹ä¸æ­£ç¡®");
+        }
+        Node tmp=this.FindNode(pos);
+        tmp.data=tmp.next.data;
+        tmp.next=tmp.next.next;
+    }
+    //é“¾è¡¨é•¿åº¦
     @Override
     public int GetListLength() {
         return size;
@@ -223,12 +266,19 @@ public class Linklist {
     public static void main(String[] args) {
         ILinklist<String> list=new MyLink();
         list.PushBack("Dyson");
+        list.PushBack("love");
         list.PushBack("Dyson");
-        list.PushBack("Dyson");
+        list.PushBack("Liyuxin");
+        list.PushFront("å•¦å•Šå•¦å•¦");
+        list.EraseNotTailNode(3);
+//        list.RemoveAll("Dyson");
+//        list.Remove("Dyson");
+//        list.PushBack("Dyson");
         System.out.println(list.GetListLength());
-        list.Insert(3,"love");
-        list.PushFront("Liyuxin");
-        list.PopBack();
+//        list.Insert(3,"love");
+//        list.PushFront("Liyuxin");
+//        list.PrintList();
+//        list.PopBack();
         list.PrintList();
     }
 }
