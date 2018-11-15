@@ -56,6 +56,6 @@ public class myStack {
         }
         for (String tmp:s) {
             System.out.println(tmp+" ");
-        }
+        }  
     }
 }
