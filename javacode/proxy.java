@@ -1,4 +1,4 @@
-1package www.Dyson.java;
+﻿1package www.Dyson.java;
 //抽象主题类
 interface abstractTheme{
     void buylipstick();
@@ -10,7 +10,7 @@ class realTheme implements abstractTheme{
     }
 }
 //代理类
-class proxyTheme implements abstractTheme{
+class proxyTheme implements abstractTheme{   
     private realTheme subject=null;
     public proxyTheme(realTheme subject){
         this.subject=subject;
