@@ -1,0 +1,151 @@
+//序列版本号
+private static final long serialVersionUID = 8683452581122892189L;
+
+//默认初始化数组容量
+private static final int DEFAULT_CAPACITY = 10;
+
+//空数组
+private static final Object[] EMPTY_ELEMENTDATA = {};
+
+//默认构造函数的空数组
+ private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
+ 
+ //数组缓冲区，存储元素的底层实现，真正存放元素的数组
+ transient Object[] elementData;// non-private to simplify nested class access
+ 
+ //当前数组的大小
+ private int size;
+
+ //指定初始化容量的构造方法
+    public ArrayList(int initialCapacity) {
+		//若初始容量大于0，则新建一个大小为指定容量的Object数组
+        if (initialCapacity > 0) {
+            this.elementData = new Object[initialCapacity];
+		//若容量为0，则直接将空数组赋给elementData
+        } else if (initialCapacity == 0) {
+            this.elementData = EMPTY_ELEMENTDATA;
+		//若容量小于0，则抛出异常
+        } else {
+            throw new IllegalArgumentException("Illegal Capacity: "+
+                                               initialCapacity);
+        }
+    }
+	
+//默认构造方法
+//将默认的构造函数的空数组赋给elementData
+    public ArrayList() {
+        this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+    }
+ 
+//利用别的集合类构建ArrayList的构造方法
+    public ArrayList(Collection<? extends E> c) {
+		//用Collection.toArray()方法取得一个对象数组，并赋给elementData
+		//浅拷贝
+        elementData = c.toArray();
+		//size为集合元素数量，通过别的集合来构造ArrayList时，就需要给size赋值
+		//如果size为0，直接空数组赋给elementData即可
+		//如果size不为0，则要将Collection对象中的内容拷贝到elementData中
+        if ((size = elementData.length) != 0) {
+            // c.toArray might (incorrectly) not return Object[] (see 6260652)
+            //深拷贝
+			if (elementData.getClass() != Object[].class)
+                elementData = Arrays.copyOf(elementData, size, Object[].class);
+        } else {
+            // replace with empty array.
+            this.elementData = EMPTY_ELEMENTDATA;
+        }
+    }
+ --------------------------------------------------------------------------------
+ 
+ //添加元素，添加成功返回true
+ //每次添加元素之前都会检查一下是否需要扩容
+	public boolean add(E e) {
+		//判断添加后的容量，选择是否需要扩容
+        ensureCapacityInternal(size + 1);  // Increments modCount!!
+		//在数组末尾添加元素，更新size
+        elementData[size++] = e;
+        return true;
+    }
+	
+
+    private void ensureCapacityInternal(int minCapacity) {
+        ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));
+    }
+ 
+ //当第一次添加元素，需要获取数组初始容量，返回minCapacity和默认初始容量中的较大值
+ //当不是第一次添加元素，则直接返回minCapacity
+    private static int calculateCapacity(Object[] elementData, int minCapacity) {
+        if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+            return Math.max(DEFAULT_CAPACITY, minCapacity);
+        }
+        return minCapacity;
+    }
+ 
+ //moCount(修改次数)自增1,判断是否需要扩充数组长度
+    private void ensureExplicitCapacity(int minCapacity) {
+        modCount++;
+
+        // overflow-conscious code
+        if (minCapacity - elementData.length > 0)
+			//增加数组长度
+            grow(minCapacity);
+    }
+ 
+ //数组扩容，默认需要扩容1.5倍
+    private void grow(int minCapacity) {
+        // overflow-conscious code
+        int oldCapacity = elementData.length;
+		//新数组大小为原数组的1.5倍
+        int newCapacity = oldCapacity + (oldCapacity >> 1);
+		//如果新数组大小仍然小于minCapacity，则更新newCapacity的值
+        if (newCapacity - minCapacity < 0)
+            newCapacity = minCapacity;
+		//如果新数组大小大于数组的最大容量限度，调用huneCapacity()方法
+        if (newCapacity - MAX_ARRAY_SIZE > 0)
+            newCapacity = hugeCapacity(minCapacity);
+        // minCapacity is usually close to size, so this is a win:
+		//建立一个新数组进行扩容拷贝
+        elementData = Arrays.copyOf(elementData, newCapacity);
+    }
+ 
+ //新数组的大小
+    private static int hugeCapacity(int minCapacity) {
+		//若minCapacity小于0，抛异常
+        if (minCapacity < 0) // overflow
+            throw new OutOfMemoryError();
+        return (minCapacity > MAX_ARRAY_SIZE) ?
+            Integer.MAX_VALUE :
+            MAX_ARRAY_SIZE;
+    }
+ 
+
+ //指定位置添加元素
+	public void add(int index, E element) {
+		//越界判断，如果越界抛异常
+        rangeCheckForAdd(index);
+		
+		//判断是否需要扩容，步骤和上面一样
+        ensureCapacityInternal(size + 1);  // Increments modCount!!
+		//将数组从index开始的数据往后移一位
+        System.arraycopy(elementData, index, elementData, index + 1,
+                         size - index);
+		//添加元素
+        elementData[index] = element;
+        size++;
+    }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
